@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>hello home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <meta http-equiv="cache-control" content="max-age=0" />
+  <meta http-equiv="cache-control" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
+  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+  <meta http-equiv="pragma" content="no-cache" />
+</head>
+<body>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
+			<img src="images/home.jpg" class="img-responsive" alt="Cinque Terre">
+		</div>
+		<div class="col-xs-2 col-sm-8 col-md-8 col-lg-8">
+			<h1>Hello My Sweet Home</h1>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<div id="menu"></div>
+		</div>
+		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color:pink;" id="body_section">
+			<p>Sed ut perspiciatis...</p>
+		</div>
+	</div>
+	<!--
+	<div class="row" id="temperature">
+	</div>
+	-->
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="static/javaScript/javaScriptUpdater.js"></script>
+<script>
+window.onload = function() {
+  httpSetDiv("menu","menu.html")
+};
+pollUpdateDiv("temperature","last_updates.html",1000);
+</script>
+
+</body>
+</html>
