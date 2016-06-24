@@ -11,6 +11,8 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+#in the login branch
+
 class ServerSentEvent(object):
 	def __init__(self, data):
 		self.data = data
