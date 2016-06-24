@@ -32,10 +32,11 @@ class ServerSentEvent(object):
 
 #The user class
 class User():
-	def __init__(self, name, id, active=True):
-		self.name = name
+	def __init__(self, id,name,is_active=False,is_authenticated=False):
 		self.id = id
-		self.active = active
+		self.name = name
+		self.active = is_active
+		self.authenticated = is_authenticated
 	def is_active(self):
 		# Here you should write whatever the code is
 		# that checks the database if your user is active
@@ -43,9 +44,33 @@ class User():
 	def is_anonymous(self):
 		return False
 	def is_authenticated(self):
-		return True
+		return self.authenticated
 	def get_id(self):
-		return self.id		
+		return self.id
+	def set_authenticated(self,authentication):
+		if authentication:
+			query = "UPDATE user SET is_authenticated = 1 WHERE id= "+str(self.id)
+			self.authenticated = True
+		else:
+			query = "UPDATE user SET is_authenticated = 0 WHERE id= "+str(self.id)
+			self.authenticated = False
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		conn.commit()
+		conn.close()
+	def set_active(self,active):
+		if active:
+			query = "UPDATE user SET is_active = 1 WHERE id= "+str(self.id)
+			self.active = True
+		else:
+			query = "UPDATE user SET is_active = 0 WHERE id= "+str(self.id)
+			self.active = False
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		conn.commit()
+		conn.close()	
 #the user loader
 @login_manager.user_loader
 def load_user(id):
