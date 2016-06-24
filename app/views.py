@@ -73,17 +73,29 @@ class User():
 		conn.close()	
 #the user loader
 @login_manager.user_loader
+#the user loader
+@login_manager.user_loader
 def load_user(id):
+	print "Hello,I'm the load user function:"
 	conn = sqlite3.connect('users.db')
 	c=conn.cursor()
 	query = "SELECT * FROM user WHERE id = "+id
 	c.execute(query)
 	data = c.fetchone()
 	conn.close()
+	id = data[0]
 	name = data[1]
-	id   = data[0]
-	print name
-	user= User(name,id)
+	is_active = data[2]
+	is_authenticated = data[3]
+	if is_active == 1:
+		is_active = True
+	else:
+		is_active = False
+	if is_authenticated == 1:
+		is_authenticated = True
+	else:
+		is_authenticated =False
+	user= User(id,name,is_active,is_authenticated)
 	return user
 	
 @app.route('/login.html', methods=['GET', 'POST'])
