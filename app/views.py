@@ -1,6 +1,6 @@
 from gevent.pywsgi import WSGIServer
 from flask import Flask, json, Response, render_template,request,redirect
-from flask_login import LoginManager,login_user,login_required
+from flask_login import LoginManager,login_user,login_required,current_user,logout_user
 from flask_wtf import validators,form
 import sqlite3
 from random import randint
@@ -74,9 +74,7 @@ class User():
 		c=conn.cursor()
 		c.execute(query)
 		conn.commit()
-		conn.close()	
-#the user loader
-@login_manager.user_loader
+		conn.close()
 #the user loader
 @login_manager.user_loader
 def load_user(id):
@@ -138,6 +136,7 @@ def login():
 	return render_template('login.html', form=form)
 
 @app.route('/')
+@app.route('/login.html')
 def first_login():
 	return render_template("/login.html")	
 
@@ -159,6 +158,16 @@ def room():
 def pages():
 	rule = str(request.url_rule)
 	return render_template(rule[1:])
+	
+@app.route("/logout.html", methods=['GET', 'POST'])
+@login_required
+def logout():
+	print "in the logout view"
+	user = current_user
+	user.set_authenticated(False)
+	logout_user()
+	print "logged out user"
+	return redirect('/login.html')
 	
 # those methods are for SSE
 def event():
