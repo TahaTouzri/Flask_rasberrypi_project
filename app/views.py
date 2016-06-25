@@ -1,5 +1,5 @@
 from gevent.pywsgi import WSGIServer
-from flask import Flask, json, Response, render_template,request,redirect
+from flask import Flask, json, Response, render_template,request,redirect,url_for
 from flask_login import LoginManager,login_user,login_required,current_user,logout_user
 from flask_wtf import validators,form
 import sqlite3
@@ -14,6 +14,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
 
 #in the login branch
 
@@ -175,9 +176,11 @@ def event():
 		ev = ServerSentEvent(str(randint(0,45)))
 		yield ev.encode()
 		sleep(1)
-@app.route('/stream/', methods=['GET', 'POST'])
-@login_required
-def stream():
+@app.route('/stream', methods=['GET', 'POST'])
+@app.route('/stream/<room>', methods=['GET', 'POST'])
+def stream(room=None):
+	print "in the stream view"
+	print room
 	return Response(event(), mimetype="text/event-stream")
 	
 

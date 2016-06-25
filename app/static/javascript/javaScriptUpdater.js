@@ -27,6 +27,10 @@ function change_active_menu(clicked_id)
 	change_class(clicked_id);
 	url = clicked_id.concat(".html");
 	httpSetDiv("body_section",url);
+	//----------------------------------------------------------------
+	//Need to stop the old event if exist before starting the new one
+	//----------------------------------------------------------------
+	sseUpdateDiv("temperature","/stream/"+clicked_id);
 }
 //this function is to update a specific variable in the page
 function updateVariable(variable_id,value)
@@ -41,5 +45,6 @@ function sseUpdateDiv(div_id,source)
 	eventSource.addEventListener("message", function(event) 
 	{
 		document.getElementById(div_id).innerHTML = event.data;
-	});
+	}
+	);
 }
