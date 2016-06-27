@@ -17,9 +17,7 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-
-#in the login branch
-
+#server sent event class
 class ServerSentEvent(object):
 	def __init__(self, data):
 		self.data = data
@@ -84,8 +82,10 @@ class User():
 		conn = sqlite3.connect('users.db')
 		c=conn.cursor()
 		c.execute(query)
-		print c.fetchone()
-		return "2"
+		id = str(c.fetchone()[0])
+		print id
+		return id
+		
 #the user loader
 @login_manager.user_loader
 def load_user(id):
