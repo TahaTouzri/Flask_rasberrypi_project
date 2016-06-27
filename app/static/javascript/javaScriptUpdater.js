@@ -30,11 +30,7 @@ function change_active_menu(clicked_id)
 	url = clicked_id.concat(".html");
 	httpSetDiv("body_section",url);
 	//close the old SSE stream
-	if (sse_div_id == null)
-	{
-		alert("the first connection");
-	}
-	else
+	if (sse_div_id != null)
 	{
 		closeSseConnection(sse_div_id,source)
 	}
@@ -52,7 +48,6 @@ function sseUpdateDiv(div_id,source)
 {
 	var eventSource = new EventSource(source);
 	sse_div_id  = div_id;
-	alert(sse_div_id);
 	eventSource.addEventListener("message", function(event) 
 	{
 		document.getElementById(div_id).innerHTML = event.data;
