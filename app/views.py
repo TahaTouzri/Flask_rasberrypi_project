@@ -171,9 +171,9 @@ def logout():
 	return redirect('/login.html')
 	
 # those methods are for SSE
-def event():
+def event(room):
 	while(True):
-		ev = ServerSentEvent(str(randint(0,45)))
+		ev = ServerSentEvent(str(randint(0,45))+room)
 		yield ev.encode()
 		sleep(1)
 @app.route('/stream', methods=['GET', 'POST'])
@@ -181,7 +181,7 @@ def event():
 def stream(room=None):
 	print "in the stream view"
 	print room
-	return Response(event(), mimetype="text/event-stream")
+	return Response(event(room), mimetype="text/event-stream")
 	
 
 if __name__ == "__main__":
