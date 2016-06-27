@@ -3,7 +3,12 @@ from flask import Flask, json, Response, render_template,request,redirect,url_fo
 from flask_login import LoginManager,login_user,login_required,current_user,logout_user
 from flask_wtf import validators,form
 import sqlite3
-from random import randint
+import sys
+
+#Import the hardware management modules
+sys.path.insert(0, '/hardwareManagement')
+from roomMonitoring import get_room_info_update
+
 from time import sleep
 from jinja2 import Template
 
@@ -173,9 +178,9 @@ def logout():
 # those methods are for SSE
 def event(room):
 	while(True):
-		ev = ServerSentEvent(str(randint(0,45))+room)
+		data = get_room_info_update(room) 
+		ev   = ServerSentEvent(data)
 		yield ev.encode()
-		sleep(1)
 @app.route('/stream', methods=['GET', 'POST'])
 @app.route('/stream/<room>', methods=['GET', 'POST'])
 def stream(room=None):
