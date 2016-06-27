@@ -1,5 +1,6 @@
 //some needed global variables
 var sse_div_id  = null;
+var sse_source  = null;
 //This function is to update a specific div 
 function httpSetDiv(div_id,theUrl)
 {
@@ -32,7 +33,9 @@ function change_active_menu(clicked_id)
 	//close the old SSE stream
 	if (sse_div_id != null)
 	{
-		closeSseConnection(sse_div_id,source)
+		alert("removing the old connection");
+		closeSseConnection(sse_div_id,sse_source);
+		alert("old connection removed");
 	}
 	//open e new SSE stream
 	sseUpdateDiv("temperature","/stream/"+clicked_id);
@@ -48,6 +51,7 @@ function sseUpdateDiv(div_id,source)
 {
 	var eventSource = new EventSource(source);
 	sse_div_id  = div_id;
+	sse_source  = source;
 	eventSource.addEventListener("message", function(event) 
 	{
 		document.getElementById(div_id).innerHTML = event.data;
