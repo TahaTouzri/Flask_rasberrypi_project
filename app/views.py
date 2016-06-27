@@ -4,10 +4,8 @@ from flask_login import LoginManager,login_user,login_required,current_user,logo
 from flask_wtf import validators,form
 import sqlite3
 import sys
-
 #Import the hardware management modules
-sys.path.insert(0, '/hardwareManagement')
-from roomMonitoring import get_room_info_update
+from hardwareManagement.roomMonitoring import get_room_info_update
 
 from time import sleep
 from jinja2 import Template
