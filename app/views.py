@@ -4,11 +4,10 @@ from flask_login import LoginManager,login_user,login_required,current_user,logo
 from flask_wtf import validators,form
 import sqlite3
 import sys
-#Import the hardware management modules
-from hardwareManagement.roomMonitoring import get_room_info_update
-
 from time import sleep
 from jinja2 import Template
+#Import the hardware management modules
+from hardwareManagement.roomMonitoring import get_room_info_update
 
 # Configure authentication
 app = Flask(__name__)
@@ -40,8 +39,8 @@ class ServerSentEvent(object):
 
 #The user class
 class User():
-	def __init__(self, id,name,is_active=False,is_authenticated=False):
-		self.id = id
+	def __init__(self,name,is_active=False,is_authenticated=False):
+		self.id = self.get_user_id(name)
 		self.name = name
 		self.active = is_active
 		self.authenticated = is_authenticated
@@ -79,6 +78,14 @@ class User():
 		c.execute(query)
 		conn.commit()
 		conn.close()
+	def get_user_id(self,user_name):
+		query = "SELECT id FROM user WHERE name = '"+user_name+"'"
+		print query
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		print c.fetchone()
+		return "2"
 #the user loader
 @login_manager.user_loader
 def load_user(id):
@@ -102,7 +109,7 @@ def load_user(id):
 		is_authenticated = True
 	else:
 		is_authenticated =False
-	user= User(id,name,is_active,is_authenticated)
+	user= User(name,is_active,is_authenticated)
 	return user
 	
 @app.route('/login.html', methods=['POST'])
@@ -130,8 +137,12 @@ def login():
 		print "redirect to after login"
 	"""
 	user_name = form["username"]
-	user=User("2",user_name)
-	if user_name=="taha":
+	password  = form["password"]
+	print user_name
+	print password
+	#id        = get_user_id(user_name)
+	user=User(user_name)
+	if True:#user_name=="taha":
 		user.set_authenticated(True)
 		login_user(user)
 		print "user logged in successfully"
@@ -155,9 +166,12 @@ def first_login():
 def room():
 	room = str(request.url_rule)[1:]
 	return render_template('room.html', room=room)
-
+	
 @app.route('/menu.html')
 @app.route('/welcome.html')
+@app.route('/profile.html')
+@app.route('/account.html')
+@app.route('/security.html')
 @login_required
 def pages():
 	rule = str(request.url_rule)
