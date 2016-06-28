@@ -17,6 +17,8 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
+#define some globale variables
+users_list=[]
 #server sent event class
 class ServerSentEvent(object):
 	def __init__(self, data):
@@ -85,11 +87,33 @@ class User():
 		id = str(c.fetchone()[0])
 		print id
 		return id
+#sseConnection class
+class sseConnection():
+	def __init__(self,user_id):
+		self.user_id = user_id
+		query        = "INSERT INTO sse_connection (user_id) VALUES ("+ str(user_id)+");"
+		conn         = sqlite3.connect('users.db')
+		c            =conn.cursor()
+		c.execute(query)
+		conn.commit()
+		query        = "SELECT MAX(connection_id) FROM sse_connection WHERE user_id = "+str(self.user_id)+";"
+		c.execute(query)
+		self.connection_id = str(c.fetchone()[0])
+		conn.close()
+	def is_active(self):
+		query = "SELECT MAX(connection_id) FROM sse_connection WHERE user_id = "+str(self.user_id)+";"
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		active_connection_id = str(c.fetchone()[0])
+		if active_connection_id == self.connection_id:
+			return True
+		else:
+			return False
 		
 #the user loader
 @login_manager.user_loader
 def load_user(id):
-	print "Hello,I'm the load user function:"
 	conn = sqlite3.connect('users.db')
 	c=conn.cursor()
 	query = "SELECT * FROM user WHERE id = "+id
@@ -188,17 +212,20 @@ def logout():
 	return redirect('/login.html')
 	
 # those methods are for SSE
-def event(room):
-	while(True):
+def event(room,user_id):
+	sse_connection = sseConnection(user_id)
+	while(sse_connection.is_active()):
 		data = get_room_info_update(room) 
 		ev   = ServerSentEvent(data)
+		print user_id
 		yield ev.encode()
+		
 @app.route('/stream', methods=['GET', 'POST'])
 @app.route('/stream/<room>', methods=['GET', 'POST'])
+#@login_required
 def stream(room=None):
-	print "in the stream view"
-	print room
-	return Response(event(room), mimetype="text/event-stream")
+	user_id = current_user.get_id()
+	return Response(event(room,user_id), mimetype="text/event-stream")
 	
 
 if __name__ == "__main__":
