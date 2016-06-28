@@ -133,7 +133,7 @@ def logout():
 # those methods are for SSE
 def event(room,user_id):
 	sse_connection = sseConnection(user_id)
-	while(sse_connection.is_active()):
+	while(True):
 		data = get_room_info_update(room) 
 		ev   = ServerSentEvent(data)
 		print user_id

@@ -59,5 +59,6 @@ function sseUpdateDivOperation()
 //Close the SSE_Connection
 function closeSseConnection(eventSource)
 {
-	eventSource.removeEventListener("message", sseUpdateDivOperation);
+	//eventSource.removeEventListener("message", sseUpdateDivOperation);
+	eventSource.close();
 }
