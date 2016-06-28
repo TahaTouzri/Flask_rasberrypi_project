@@ -45,7 +45,14 @@ def load_user(id):
 	
 @app.route('/login.html', methods=['POST'])
 def login():
-	print "in the login view"
+	def clean_db(user):
+		query ="DELETE FROM sse_connection WHERE user_id="+user.get_id()+";"
+		print query
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		conn.commit()
+		conn.close()
 	def next_is_valid(next):
 		return False
 	# Here we use a class of some kind to represent and validate our
@@ -75,7 +82,10 @@ def login():
 	user=User(user_name)
 	if True:#user_name=="taha":
 		user.set_authenticated(True)
+		#login the user
 		login_user(user)
+		#clean database
+		clean_db(user)
 		print "user logged in successfully"
 		return redirect('/welcome.html')
 	print "redering login.html"

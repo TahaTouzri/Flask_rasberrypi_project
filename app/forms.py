@@ -89,4 +89,13 @@ class sseConnection():
 		if active_connection_id == self.connection_id:
 			return True
 		else:
+			self.delete_connection()
 			return False
+	def delete_connection(self):
+		query ="DELETE FROM sse_connection WHERE connection_id="+self.connection_id+";"
+		print query
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		c.execute(query)
+		conn.commit()
+		conn.close()

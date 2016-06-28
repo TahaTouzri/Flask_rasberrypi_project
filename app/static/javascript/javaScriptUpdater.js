@@ -35,7 +35,7 @@ function change_active_menu(clicked_id)
 	{
 		closeSseConnection(sse_event_source);
 	}
-	//open e new SSE stream
+	//open a new SSE stream
 	sseUpdateDiv("temperature","/stream/"+clicked_id);
 }
 //this function is to update a specific variable in the page
