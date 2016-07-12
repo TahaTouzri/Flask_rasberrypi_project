@@ -7,6 +7,7 @@ import sys
 from time import sleep
 from jinja2 import Template
 from forms import *
+from datetime import datetime
 #Import the hardware management modules
 from hardwareManagement.roomMonitoring import get_room_info_update
 
@@ -110,15 +111,28 @@ def room():
 	
 @app.route('/menu.html')
 @app.route('/welcome.html')
-@app.route('/profile.html')
 @app.route('/account.html')
 @app.route('/security.html')
+@app.route('/profile.html')
 @login_required
 def pages():
 	rule = str(request.url_rule)
 	user = current_user
-	user_name = user.name
-	return render_template(rule[1:],user_name=user_name)
+	name = user.name
+	user_name = "user name"
+	#need to update class user and to get data same way as user_name
+	phone_number  = "71 000 111"
+	mobile_number = "94 387 918"
+	email         = "touzritaha@gmail.com"
+	date_of_birth = "04/08/1989"
+	gender        = "Male"
+	home_address  = "Fahs"
+	#home_time     = "14/01/2011"
+	home_time     = str(datetime.now().date())
+	return render_template(rule[1:],user_name=user_name,name=name,phone_number=phone_number,
+						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
+						  gender=gender,home_address=home_address,home_time=home_time)
+
 	
 @app.route("/logout.html", methods=['GET', 'POST'])
 @login_required
@@ -131,12 +145,13 @@ def logout():
 	return redirect('/login.html')
 	
 # those methods are for SSE
+
+#update room status
 def event(room,user_id):
 	sse_connection = sseConnection(user_id)
 	while(True):
 		data = get_room_info_update(room) 
 		ev   = ServerSentEvent(data)
-		print user_id
 		yield ev.encode()
 		
 @app.route('/stream', methods=['GET', 'POST'])
@@ -145,6 +160,8 @@ def event(room,user_id):
 def stream(room=None):
 	user_id = current_user.get_id()
 	return Response(event(room,user_id), mimetype="text/event-stream")
+
+#update time date
 	
 
 if __name__ == "__main__":
