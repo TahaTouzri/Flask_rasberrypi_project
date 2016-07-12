@@ -114,6 +114,7 @@ def room():
 @app.route('/account.html')
 @app.route('/security.html')
 @app.route('/profile.html')
+@app.route('/edit_profile.html')
 @login_required
 def pages():
 	rule = str(request.url_rule)
