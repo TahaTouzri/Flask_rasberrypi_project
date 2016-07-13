@@ -24,14 +24,21 @@ login_manager.init_app(app)
 def load_user(id):
 	conn = sqlite3.connect('users.db')
 	c=conn.cursor()
-	query = "SELECT * FROM user WHERE id = "+id
+	# fetch user_name:
+	query="SELECT user_name FROM user WHERE id = '"+id+"'"
 	c.execute(query)
-	data = c.fetchone()
+	user_name = c.fetchone()[0]
+	# fetch is_authenticated:
+	query="SELECT is_authenticated FROM user WHERE id = '"+id+"'"
+	c.execute(query)
+	is_authenticated = c.fetchone()[0]
+	# fetch is_active:
+	query="SELECT is_active FROM user WHERE id = '"+id+"'"
+	c.execute(query)
+	is_active = c.fetchone()[0]
+	#close connection:
 	conn.close()
-	id = data[0]
-	name = data[1]
-	is_authenticated = data[2]
-	#is_active = data[3]
+
 	is_active = 0
 	if is_active == 1:
 		is_active = True
@@ -41,7 +48,7 @@ def load_user(id):
 		is_authenticated = True
 	else:
 		is_authenticated =False
-	user= User(name,is_active,is_authenticated)
+	user= User(user_name,is_active,is_authenticated)
 	return user
 
 @app.route('/login.html', methods=['POST'])
@@ -84,6 +91,8 @@ def login():
 	if True:#user_name=="taha":
 		user.set_authenticated(True)
 		#login the user
+		print "---------------------------------"
+		print "want to login user"
 		login_user(user)
 		#clean database
 		clean_db(user)
@@ -114,25 +123,51 @@ def room():
 @app.route('/account.html')
 @app.route('/security.html')
 @app.route('/profile.html')
-@app.route('/edit_profile.html')
 @login_required
 def pages():
 	rule = str(request.url_rule)
 	user = current_user
 	user_name = user.user_name
-	name = "name is not user_name"
+	name = user.get_name()#"name is not user_name"
 	#need to update class user and to get data same way as user_name
-	phone_number  = "71 000 111"
-	mobile_number = "94 387 918"
-	email         = "touzritaha@gmail.com"
-	date_of_birth = "1989-08-05"
-	gender        = "Male"
-	home_address  = "Fahs"
+	phone_number  = user.get_phone_number()#"71 000 111"
+	mobile_number = user.get_mobile_number()#"94 387 918"
+	email         = user.get_email()#"touzritaha@gmail.com"
+	date_of_birth = user.get_date_of_birth()#"1989-08-05"
+	gender        = user.get_gender()#"Male"
+	home_address  = user.get_home_address()#"Fahs"
 	#home_time     = "14/01/2011"
 	home_time     = str(datetime.now().date())
 	return render_template(rule[1:],user_name=user_name,name=name,phone_number=phone_number,
 						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
 						  gender=gender,home_address=home_address,home_time=home_time)
+
+
+@app.route('/edit_profile.html', methods=['GET','POST'])
+@login_required
+def edit_profile():
+	rule = str(request.url_rule)
+	user = current_user
+	user_name = user.user_name
+	name = user.get_name()#"name is not user_name"
+	#need to update class user and to get data same way as user_name
+	phone_number  = user.get_phone_number()#"71 000 111"
+	mobile_number = user.get_mobile_number()#"94 387 918"
+	email         = user.get_email()#"touzritaha@gmail.com"
+	date_of_birth = user.get_date_of_birth()#"1989-08-05"
+	gender        = user.get_gender()#"Male"
+	home_address  = user.get_home_address()#"Fahs"
+	#home_time     = "14/01/2011"
+	home_time     = str(datetime.now().date())
+	form = request.form
+	print "-------------------------------------"
+	print "-------------------------------------"
+	print form
+	return render_template(rule[1:],user_name=user_name,name=name,phone_number=phone_number,
+						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
+						  gender=gender,home_address=home_address,home_time=home_time)
+
+
 
 
 @app.route("/logout.html", methods=['GET', 'POST'])

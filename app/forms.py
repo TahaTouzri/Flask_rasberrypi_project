@@ -1,22 +1,4 @@
 import sqlite3
-#server sent event class
-class ServerSentEvent(object):
-	def __init__(self, data):
-		self.data = data
-		self.event = None
-		self.id = None
-		self.desc_map = {
-			self.data : "data",
-			self.event : "event",
-			self.id : "id"
-		}
-
-	def encode(self):
-		if not self.data:
-			return ""
-		lines = ["%s: %s" % (v, k) for k, v in self.desc_map.iteritems() if k]
-		return "%s\n\n" % "\n".join(lines)
-
 #The user class
 class User():
 	def __init__(self,user_name,is_active=False,is_authenticated=False):
@@ -32,8 +14,6 @@ class User():
 		return False
 	def is_authenticated(self):
 		return self.authenticated
-	def get_id(self):
-		return self.id
 	def set_authenticated(self,authentication):
 		if authentication:
 			query = "UPDATE user SET is_authenticated = 1 WHERE id= "+str(self.id)
@@ -46,6 +26,8 @@ class User():
 		c.execute(query)
 		conn.commit()
 		conn.close()
+	def get_id(self):
+		return self.id
 	def set_active(self,active):
 		if active:
 			query = "UPDATE user SET is_active = 1 WHERE id= "+str(self.id)
@@ -59,6 +41,8 @@ class User():
 		conn.commit()
 		conn.close()
 	def get_user_id(self,user_name):
+		print "------------------------------------"
+		print user_name
 		query = "SELECT id FROM user WHERE user_name = '"+user_name+"'"
 		conn = sqlite3.connect('users.db')
 		c=conn.cursor()
@@ -121,6 +105,23 @@ class User():
 		c.execute(query)
 		email = str(c.fetchone()[0])
 		return email
+#server sent event class
+class ServerSentEvent(object):
+	def __init__(self, data):
+		self.data = data
+		self.event = None
+		self.id = None
+		self.desc_map = {
+			self.data : "data",
+			self.event : "event",
+			self.id : "id"
+		}
+
+	def encode(self):
+		if not self.data:
+			return ""
+		lines = ["%s: %s" % (v, k) for k, v in self.desc_map.iteritems() if k]
+		return "%s\n\n" % "\n".join(lines)
 #sseConnection class
 class sseConnection():
 	def __init__(self,user_id):
