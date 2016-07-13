@@ -18,7 +18,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 login_manager.init_app(app)
-		
+
 #the user loader
 @login_manager.user_loader
 def load_user(id):
@@ -43,7 +43,7 @@ def load_user(id):
 		is_authenticated =False
 	user= User(name,is_active,is_authenticated)
 	return user
-	
+
 @app.route('/login.html', methods=['POST'])
 def login():
 	def clean_db(user):
@@ -95,7 +95,7 @@ def login():
 @app.route('/')
 @app.route('/login.html')
 def first_login():
-	return render_template("/login.html")	
+	return render_template("/login.html")
 
 #We need to add that it is authenticated decorator
 @app.route('/home.html')
@@ -108,7 +108,7 @@ def first_login():
 def room():
 	room = str(request.url_rule)[1:]
 	return render_template('room.html', room=room)
-	
+
 @app.route('/menu.html')
 @app.route('/welcome.html')
 @app.route('/account.html')
@@ -119,13 +119,13 @@ def room():
 def pages():
 	rule = str(request.url_rule)
 	user = current_user
-	name = user.name
-	user_name = "user name"
+	user_name = user.user_name
+	name = "name is not user_name"
 	#need to update class user and to get data same way as user_name
 	phone_number  = "71 000 111"
 	mobile_number = "94 387 918"
 	email         = "touzritaha@gmail.com"
-	date_of_birth = "04/08/1989"
+	date_of_birth = "1989-08-05"
 	gender        = "Male"
 	home_address  = "Fahs"
 	#home_time     = "14/01/2011"
@@ -134,7 +134,7 @@ def pages():
 						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
 						  gender=gender,home_address=home_address,home_time=home_time)
 
-	
+
 @app.route("/logout.html", methods=['GET', 'POST'])
 @login_required
 def logout():
@@ -144,17 +144,17 @@ def logout():
 	logout_user()
 	print "logged out user"
 	return redirect('/login.html')
-	
+
 # those methods are for SSE
 
 #update room status
 def event(room,user_id):
 	sse_connection = sseConnection(user_id)
 	while(True):
-		data = get_room_info_update(room) 
+		data = get_room_info_update(room)
 		ev   = ServerSentEvent(data)
 		yield ev.encode()
-		
+
 @app.route('/stream', methods=['GET', 'POST'])
 @app.route('/stream/<room>', methods=['GET', 'POST'])
 #@login_required
@@ -163,7 +163,7 @@ def stream(room=None):
 	return Response(event(room,user_id), mimetype="text/event-stream")
 
 #update time date
-	
+
 
 if __name__ == "__main__":
 	app.debug = True
