@@ -105,6 +105,16 @@ class User():
 		c.execute(query)
 		email = str(c.fetchone()[0])
 		return email
+	def update(self,form):
+		user_name 	  = form["user_name"]
+		name      	  = form["name"]
+		phone_number  = form["phone_number"]
+		mobile_number = form["mobile_number"]
+		email         = form["email"]
+		date_of_birth = form["date_of_birth"]
+		#gender        = form["gender"]
+		home_address  = form["home_address"]
+		print form
 #server sent event class
 class ServerSentEvent(object):
 	def __init__(self, data):

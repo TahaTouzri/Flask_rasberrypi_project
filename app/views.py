@@ -146,8 +146,14 @@ def pages():
 @app.route('/edit_profile.html', methods=['GET','POST'])
 @login_required
 def edit_profile():
-	rule = str(request.url_rule)
 	user = current_user
+	if request.method == 'POST':
+		form = request.form
+		print "-------------------------------------"
+		print "-------------------------------------"
+		user.update(form)
+	#get new data from database if the user is update by a post request
+	#otherways get old data
 	user_name = user.user_name
 	name = user.get_name()#"name is not user_name"
 	#need to update class user and to get data same way as user_name
@@ -159,11 +165,7 @@ def edit_profile():
 	home_address  = user.get_home_address()#"Fahs"
 	#home_time     = "14/01/2011"
 	home_time     = str(datetime.now().date())
-	form = request.form
-	print "-------------------------------------"
-	print "-------------------------------------"
-	print form
-	return render_template(rule[1:],user_name=user_name,name=name,phone_number=phone_number,
+	return render_template('edit_profile.html',user_name=user_name,name=name,phone_number=phone_number,
 						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
 						  gender=gender,home_address=home_address,home_time=home_time)
 
