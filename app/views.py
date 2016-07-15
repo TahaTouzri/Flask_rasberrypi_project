@@ -7,6 +7,7 @@ import sys
 from time import sleep
 from jinja2 import Template
 from forms import *
+from modules import *
 from datetime import datetime
 #Import the hardware management modules
 from hardwareManagement.roomMonitoring import get_room_info_update
@@ -53,53 +54,37 @@ def load_user(id):
 
 @app.route('/login.html', methods=['POST'])
 def login():
-	def clean_db(user):
-		query ="DELETE FROM sse_connection WHERE user_id="+user.get_id()+";"
-		print query
-		conn = sqlite3.connect('users.db')
-		c=conn.cursor()
-		c.execute(query)
-		conn.commit()
-		conn.close()
 	def next_is_valid(next):
-		return False
+		#seems like we don't have specific permissions for specific users for now
+		#this is why we just return True
+		#this may changes in the future
+		#looks like:since you are redirecting to hard codded urls, your app is not vulnurable to
+		#the url redirect attack, but you need to be more sure about this!!, see the link bellow for more information:
+		# https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
+		return True
 	# Here we use a class of some kind to represent and validate our
 	# client-side form data. For example, WTForms is a library that will
 	# handle this for us, and we use a custom LoginForm to validate.
 	#form = LoginForm()
-	form = request.form
-	print form
-	"""
-	if True:#form.validate_on_submit():
-		# Login and validate the user.
-		# user should be an instance of your `User` class
-		#login_user(user)
-		next = request.args.get('next')
-		# next_is_valid should check if the user has valid
-		# permission to access the `next` url
-		if not next_is_valid(next):
-			return flask.abort(400)
-		print next
-		print "redirect to after login"
-	"""
-	user_name = form["username"]
-	password  = form["password"]
-	print user_name
-	print password
-	#id        = get_user_id(user_name)
-	user=User(user_name)
-	if True:#user_name=="taha":
-		user.set_authenticated(True)
-		#login the user
-		print "---------------------------------"
-		print "want to login user"
-		login_user(user)
-		#clean database
-		clean_db(user)
-		print "user logged in successfully"
-		return redirect('/welcome.html')
-	print "redering login.html"
-	return render_template('login.html', form=form)
+	form=loginForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user_name = form.username.data
+		password  = form.password.data
+		if next_is_valid("next"):
+			try:
+				user=User(user_name)
+			except:
+				return render_template('login.html', form=form,error_message="invalid user name or password")
+			if user.get_password()==password:
+				user.set_authenticated(True)
+				login_user(user)
+			else:
+				return render_template('login.html', form=form,error_message="invalid user name or password")
+		else:
+			return render_template('login.html', form=form,error_message="you have no permissions to access this page")
+		return render_template('welcome.html', name=user.get_name())
+	else:
+		return render_template('login.html', form=form,error_message="check your user name or password ++")
 
 @app.route('/')
 @app.route('/login.html')
@@ -194,7 +179,7 @@ def event(room,user_id):
 
 @app.route('/stream', methods=['GET', 'POST'])
 @app.route('/stream/<room>', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def stream(room=None):
 	user_id = current_user.get_id()
 	return Response(event(room,user_id), mimetype="text/event-stream")

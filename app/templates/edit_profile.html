@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>hello home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-offset-3 col-lg-offset-3">
+			<div class = "col-xs-12 col-sm-12 col-md-6 col-lg-6">
+				<a href="edit_profile.html" >Edit Profile</a><br>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+				<p class=" text-info">Home time:<br>{{home_time}}</p>
+			</div>
+		</div>
+  </div>
+
+  <div class = "row">
+
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+      <form action="edit_profile.html" method="post">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+				<h3 class="panel-title">Hello {{name}}</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-3 col-lg-3 " align="center">
+						<img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
+					</div>
+
+					<div class=" col-md-9 col-lg-9 ">
+					  <table class="table table-user-information">
+						<tbody>
+              <tr>
+              <td>name</td>
+              <td><input type="text" name="name" class="form-control" value={{name}}></td>
+              </tr>
+
+						  <tr>
+							<td>user name</td>
+							<td><input type="text" name="user_name" class="form-control" value={{user_name}}></td>
+						  </tr>
+
+						  <tr>
+							<td>Date of Birth</td>
+							<td><input type="date" name="date_of_birth" class="form-control" value={{date_of_birth}}></td>
+						  </tr>
+
+						  <tr>
+							<td>Gender</td>
+							<!--<td>{{gender}}-->
+                <td>
+                  <select name="gender">
+                    {% if gender=="Male"%}
+                      <option value="male" selected="selected">Male</option>
+                      <option value="female">Female</option>
+                    {%endif%}
+                    {% if gender=="Female"%}
+                      <option value="male">Male</option>
+                      <option value="female" selected="selected">Female</option>
+                    {%endif%}
+                  </select>
+
+                </td>
+						  </tr>
+
+						  <tr>
+							<td>Home Address</td>
+							<td><input type="text" name="home_address" class="form-control" value={{home_address}}></td>
+						  </tr>
+
+						  <tr>
+							<td>Email</td>
+							<td><input type="text" name="email" class="form-control" value={{email}} placeholder="Email"></td>
+						  </tr>
+
+						  <tr>
+							<td>Phone Number</td>
+							<td>
+								<input type="text" name="phone_number" value={{phone_number}} >
+								<br><br>
+								<input type="text" name="mobile_number" value={{mobile_number}} >(Mobile)
+							</td>
+						  </tr>
+
+						</tbody>
+					  </table>
+                  <!--
+                  <a href="#" class="btn btn-primary">My Sales Performance</a>
+                  <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                  -->
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-footer">
+              <button onclick="goBack()">Go Back</button>
+              <script>
+                function goBack() {
+                window.history.back();
+                                  }
+              </script>
+              <!--
+              <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+              -->
+              <span class="pull-right">
+                <input type="submit" value="save">
+              </span>
+            </div>
+           </div>
+
+         </form>
+        </div>
+
+      </div>
+    </div>
+
+</body>
+</html>
