@@ -89,7 +89,7 @@ def login():
 @app.route('/')
 @app.route('/login.html')
 def first_login():
-	return render_template("/login.html")
+	return render_template("/login.html",error_message="")
 
 #We need to add that it is authenticated decorator
 @app.route('/home.html')
@@ -128,6 +128,19 @@ def pages():
 						  gender=gender,home_address=home_address,home_time=home_time)
 
 
+@app.route('/settings.html',methods=['GET','POST'])
+@login_required
+def settings():
+	form=settingsForm()
+	if request.method == 'POST':
+		form=settingsForm(request.form)
+		user = current_user
+		new_settings = Settings(form,user.get_id())
+		print "------------------------------"
+		new_settings.update_all()
+		#create SQLITE request and
+		#save data into the database
+	return render_template('settings.html',form=form)
 @app.route('/edit_profile.html', methods=['GET','POST'])
 @login_required
 def edit_profile():

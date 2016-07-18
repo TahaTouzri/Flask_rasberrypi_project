@@ -1,4 +1,61 @@
 import sqlite3
+import forms
+
+class Settings():
+	def __init__(self,settingsForm,user_id):
+		self.data    = settingsForm.data
+		self.user_id = user_id
+	def insert_not_update(self):
+		query = "SELECT user_id FROM configuration WHERE user_name = '"+str(self.user_id)+"'"
+		conn = sqlite3.connect('users.db')
+		c=conn.cursor()
+		result = False
+		try:
+			c.execute(query)
+		except:
+			result = True
+		conn.close()
+		return result
+	def set_new_login_enable_sms(self):
+		if self.insert_not_update():
+			print "insert not update"
+			query =
+		else:
+			print "update existing config"
+			query = 
+
+	def set_new_login_enable_email(self):
+		pass
+	def set_temperature_exceed_enable_sms(self):
+		pass
+	def set_temperature_exceed_enable_email(self):
+		pass
+	def set_temperature_decrease_enable_sms(self):
+		pass
+	def set_temperature_decrease_enable_email(self):
+		pass
+	def set_door_opened_enable_sms(self):
+		pass
+	def set_door_opened_enable_email(self):
+		pass
+	def set_window_opened_enable_sms(self):
+		pass
+	def set_window_opened_enable_email(self):
+		pass
+	def update_all(self):
+		print "---------------------------------"
+		print self.user_id
+		print self.data['new_login_enable_sms']
+		print self.data['new_login_enable_email']
+		print self.data['temperature_exceed_enable_sms']
+		print self.data['temperature_exceed_enable_email']
+		print self.data['temperature_decrease_enable_sms']
+		print self.data['temperature_decrease_enable_email']
+		print self.data['door_opened_enable_sms']
+		print self.data['door_opened_enable_email']
+		print self.data['window_opened_enable_sms']
+		print self.data['window_opened_enable_email']
+		self.set_new_login_enable_sms()
 #The user class
 class User():
 	def __init__(self,user_name,is_active=False,is_authenticated=False):
