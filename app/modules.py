@@ -1,61 +1,126 @@
 import sqlite3
 import forms
 
+def execute_insert_query(query):
+	conn = sqlite3.connect('users.db')
+	c=conn.cursor()
+	c.execute(query)
+	conn.commit()
+	conn.close()
+def execute_select_query(query):
+	conn = sqlite3.connect('users.db')
+	c=conn.cursor()
+	c.execute(query)
+	result = str(c.fetchone()[0])
+	print "+++++++++++++++++++++++++++++"
+	print query
+	print result
+	if result =="True":
+		return True
+	else:
+		return False
+
 class Settings():
-	def __init__(self,settingsForm,user_id):
-		self.data    = settingsForm.data
+	def __init__(self,user_id,data=None):
+		self.data    = data
 		self.user_id = user_id
 	def insert_not_update(self):
-		query = "SELECT user_id FROM configuration WHERE user_name = '"+str(self.user_id)+"'"
+		query = "SELECT user_id FROM configuration WHERE user_id = '"+str(self.user_id)+"'"
 		conn = sqlite3.connect('users.db')
 		c=conn.cursor()
+		print query
 		result = False
 		try:
 			c.execute(query)
+			print str(c.fetchone()[0])
 		except:
 			result = True
 		conn.close()
 		return result
-	def set_new_login_enable_sms(self):
+	def update_column(self,column):
+		query = "UPDATE configuration SET "+column+" = '"+str(self.data[column])+"' WHERE user_id= '"+str(self.user_id)+"';"
+		print query
+		execute_insert_query(query)
+	def insert_into_column(self,column):
+		query = "INSERT INTO configuration (user_id,"+column+") VALUES ("+ str(self.user_id)+",'"+str(self.data[column])+"');"
+		print query
+		execute_insert_query(query)
+	def insert_or_update(self,column):
 		if self.insert_not_update():
-			print "insert not update"
-			query =
+			print "insert new configuration"
+			self.insert_into_column(column)
 		else:
 			print "update existing config"
-			query = 
-
+			self.update_column(column)
+	def set_new_login_enable_sms(self):
+		self.insert_or_update('new_login_enable_sms')
 	def set_new_login_enable_email(self):
-		pass
+		self.insert_or_update('new_login_enable_email')
 	def set_temperature_exceed_enable_sms(self):
-		pass
+		self.insert_or_update('temperature_exceed_enable_sms')
 	def set_temperature_exceed_enable_email(self):
-		pass
+		self.insert_or_update('temperature_exceed_enable_email')
 	def set_temperature_decrease_enable_sms(self):
-		pass
+		self.insert_or_update('temperature_decrease_enable_sms')
 	def set_temperature_decrease_enable_email(self):
-		pass
+		self.insert_or_update('temperature_decrease_enable_email')
 	def set_door_opened_enable_sms(self):
-		pass
+		self.insert_or_update('door_opened_enable_sms')
 	def set_door_opened_enable_email(self):
-		pass
+		self.insert_or_update('door_opened_enable_email')
 	def set_window_opened_enable_sms(self):
-		pass
+		self.insert_or_update('window_opened_enable_sms')
 	def set_window_opened_enable_email(self):
-		pass
+		self.insert_or_update('window_opened_enable_email')
 	def update_all(self):
-		print "---------------------------------"
-		print self.user_id
-		print self.data['new_login_enable_sms']
-		print self.data['new_login_enable_email']
-		print self.data['temperature_exceed_enable_sms']
-		print self.data['temperature_exceed_enable_email']
-		print self.data['temperature_decrease_enable_sms']
-		print self.data['temperature_decrease_enable_email']
-		print self.data['door_opened_enable_sms']
-		print self.data['door_opened_enable_email']
-		print self.data['window_opened_enable_sms']
-		print self.data['window_opened_enable_email']
 		self.set_new_login_enable_sms()
+		self.set_new_login_enable_email()
+		self.set_temperature_decrease_enable_sms()
+		self.set_temperature_decrease_enable_email()
+		self.set_temperature_exceed_enable_sms()
+		self.set_temperature_exceed_enable_email()
+		self.set_door_opened_enable_sms()
+		self.set_door_opened_enable_email()
+		self.set_window_opened_enable_sms()
+		self.set_window_opened_enable_email()
+	#get methods
+	def get_new_login_enable_sms(self):
+		query = "SELECT new_login_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_new_login_enable_email(self):
+		query = "SELECT new_login_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_temperature_exceed_enable_sms(self):
+		query = "SELECT temperature_exceed_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_temperature_exceed_enable_email(self):
+		query = "SELECT temperature_exceed_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_temperature_decrease_enable_sms(self):
+		query = "SELECT temperature_decrease_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_temperature_decrease_enable_email(self):
+		query = "SELECT temperature_decrease_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_door_opened_enable_sms(self):
+		query = "SELECT door_opened_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_door_opened_enable_email(self):
+		query = "SELECT door_opened_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_window_opened_enable_sms(self):
+		query = "SELECT window_opened_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_window_opened_enable_email(self):
+		query = "SELECT window_opened_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_window_opened_enable_email(self):
+		query = "SELECT window_opened_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
+	def get_temperature_max_val(self):
+		return 20
+	def get_temperature_min_val(self):
+		return 10
 #The user class
 class User():
 	def __init__(self,user_name,is_active=False,is_authenticated=False):

@@ -131,16 +131,18 @@ def pages():
 @app.route('/settings.html',methods=['GET','POST'])
 @login_required
 def settings():
-	form=settingsForm()
+	user = current_user
 	if request.method == 'POST':
 		form=settingsForm(request.form)
-		user = current_user
-		new_settings = Settings(form,user.get_id())
-		print "------------------------------"
-		new_settings.update_all()
-		#create SQLITE request and
-		#save data into the database
-	return render_template('settings.html',form=form)
+		settings = Settings(user.get_id(),form.data)
+		#save new settings to database
+		settings.update_all()
+	else:
+		#render the form
+		form = settingsForm(request.form)
+		#get the form values from the database
+		settings=Settings(user.get_id())
+	return render_template('settings.html',form=form,settings=settings)
 @app.route('/edit_profile.html', methods=['GET','POST'])
 @login_required
 def edit_profile():
