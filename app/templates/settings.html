@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>hello home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-offset-3 col-lg-offset-3">
+      <div class = "col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <p class=" text-info">Home time:<br>{{home_time}}</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="dropdownmenu">
+      </div>
+		</div>
+  </div>
+
+  <div class = "row">
+
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+      <form action="settings.html" method="post" name="settings_form" onsubmit="validateForm();">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+				<h3 class="panel-title">Hello {{name}}</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-3 col-lg-3 " align="center">
+						<img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
+					</div>
+
+					<div class=" col-md-9 col-lg-9 ">
+					  <table class="table table-user-information">
+						<tbody>
+              <tr>
+                <td></td>
+                <td>Enable SMS</td>
+                <td>Enable email</td>
+              </tr>
+              <tr>
+                <td>New login alert</td>
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.new_login_enable_sms(checked=settings.get_new_login_enable_sms())}}
+                  </div>
+                </td>
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.new_login_enable_email(checked=settings.get_new_login_enable_email())}}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+              <tr>
+                <td>
+                Rooms status alert
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+              </tr>
+						  <tr>
+							<td>Temperature exceed max value</td>
+							<td>
+                <div class="checkbox" align="center">
+                  {{form.temperature_exceed_enable_sms(checked=settings.get_temperature_exceed_enable_sms())}}
+                </div>
+              </td>
+              <td>
+                <div class="checkbox" align="center">
+                  {{form.temperature_exceed_enable_email(checked=settings.get_temperature_exceed_enable_email())}}
+                </div>
+              </td>
+						  </tr>
+              <tr>
+                <td>Temperature decrease less than min value</td>
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.temperature_decrease_enable_sms(checked=settings.get_temperature_decrease_enable_sms())}}
+                  </div>
+                </td>
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.temperature_decrease_enable_email(checked=settings.get_temperature_decrease_enable_email())}}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td> Doors and windows status alert</td>
+                <td></td>
+                <td></td>
+              </tr>
+						  <tr>
+							<td>Door opened</td>
+							<!--<td>{{gender}}-->
+              <td>
+                <div class="checkbox" align="center">
+                  {{form.door_opened_enable_sms(checked=settings.get_door_opened_enable_sms())}}
+                </div>
+              </td>
+              <td>
+                <div class="checkbox" align="center">
+                  {{form.door_opened_enable_email(checked=settings.get_door_opened_enable_email())}}
+                </div>
+              </td>
+						  </tr>
+              <tr>
+              <td>Window opened</td>
+              <!--<td>{{gender}}-->
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.window_opened_enable_sms(checked=settings.get_window_opened_enable_sms())}}
+                  </div>
+                </td>
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.window_opened_enable_email(checked=settings.get_window_opened_enable_email())}}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+              <td>temperature max val</td>
+              <!--<td>{{gender}}-->
+                <td>
+                  <div class="checkbox" align="center">
+                    {{form.temperature_max_val(value=settings.get_temperature_max_val())}}
+                  </div>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr>
+              <td>temperature min val</td>
+              <!--<td>{{gender}}-->
+                <td>
+                  <div class="checkbox" align="center">
+                    <p id="error"></p>
+                    {{form.temperature_min_val(value=settings.get_temperature_min_val())}}
+                  </div>
+                </td>
+                <td>
+                </td>
+              </tr>
+						</tbody>
+					  </table>
+                  <!--
+                  <a href="#" class="btn btn-primary">My Sales Performance</a>
+                  <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                  -->
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-footer">
+              <button onclick="goBack()">Go Back</button>
+              <script>
+                function goBack() {
+                window.history.back();
+                                  }
+              </script>
+              <!--
+              <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+              -->
+              <span class="pull-right">
+                <input type="submit" value="save">
+              </span>
+            </div>
+           </div>
+
+         </form>
+        </div>
+
+      </div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="static/javascript/javaScriptUpdater.js"></script>
+<script>
+httpSetDiv("dropdownmenu","dropdownmenu.html");
+
+function validateForm() {
+  var min_val = +document.forms["settings_form"]["temperature_min_val"].value;
+  var max_val = +document.forms["settings_form"]["temperature_max_val"].value;
+  if (min_val > max_val)
+  {
+    //alert("min val must be less than max val");
+    document.getElementById("error").innerHTML = "min val must be less than max val";
+    //returnToPreviousPage();
+    return false;
+  }
+  return true;
+}
+</script>
+
+</body>
+</html>

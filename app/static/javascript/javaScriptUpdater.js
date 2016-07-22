@@ -1,15 +1,15 @@
 //some needed global variables
 var sse_div_id        = null;
 var sse_event_source  = null;
-//This function is to update a specific div 
+//This function is to update a specific div
 function httpSetDiv(div_id,theUrl)
 {
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
+    xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             document.getElementById(div_id).innerHTML=xmlHttp.responseText;
     }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.open("GET", theUrl,false); // true for asynchronous 
     xmlHttp.send(null);
 }
 //this function is to implement a polling update

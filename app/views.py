@@ -106,8 +106,8 @@ def room():
 @app.route('/menu.html')
 @app.route('/welcome.html')
 @app.route('/account.html')
-@app.route('/security.html')
 @app.route('/profile.html')
+@app.route('/dropdownmenu.html')
 @login_required
 def pages():
 	rule = str(request.url_rule)
@@ -127,22 +127,34 @@ def pages():
 						   mobile_number=mobile_number,email=email,date_of_birth=date_of_birth,
 						  gender=gender,home_address=home_address,home_time=home_time)
 
+@app.route('/security.html',methods=['GET','POST'])
+@login_required
+def security():
+	user = current_user
+	form=changePasswordForm(request.form)
+	if request.method == 'POST':
+		if form.validate():
+			print "change password in the database"
+		else:
+			print "don't save password"
+	return render_template("security.html")
+
 
 @app.route('/settings.html',methods=['GET','POST'])
 @login_required
 def settings():
 	user = current_user
-	if request.method == 'POST':
-		form=settingsForm(request.form)
+	form = settingsForm(request.form)
+	home_time="1989/08/04"
+	if request.method == 'POST' and form.validate():
+		#create settings module
 		settings = Settings(user.get_id(),form.data)
 		#save new settings to database
 		settings.update_all()
 	else:
-		#render the form
-		form = settingsForm(request.form)
 		#get the form values from the database
 		settings=Settings(user.get_id())
-	return render_template('settings.html',form=form,settings=settings)
+	return render_template('settings.html',form=form,settings=settings,home_time=home_time)
 @app.route('/edit_profile.html', methods=['GET','POST'])
 @login_required
 def edit_profile():

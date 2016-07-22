@@ -17,8 +17,10 @@ def execute_select_query(query):
 	print result
 	if result =="True":
 		return True
-	else:
+	elif result =="False":
 		return False
+	else:
+		return str(result)
 
 class Settings():
 	def __init__(self,user_id,data=None):
@@ -72,6 +74,10 @@ class Settings():
 		self.insert_or_update('window_opened_enable_sms')
 	def set_window_opened_enable_email(self):
 		self.insert_or_update('window_opened_enable_email')
+	def set_temperature_max_val(self):
+		self.insert_or_update('temperature_max_val')
+	def set_temperature_min_val(self):
+		self.insert_or_update('temperature_min_val')
 	def update_all(self):
 		self.set_new_login_enable_sms()
 		self.set_new_login_enable_email()
@@ -83,6 +89,8 @@ class Settings():
 		self.set_door_opened_enable_email()
 		self.set_window_opened_enable_sms()
 		self.set_window_opened_enable_email()
+		self.set_temperature_max_val()
+		self.set_temperature_min_val()
 	#get methods
 	def get_new_login_enable_sms(self):
 		query = "SELECT new_login_enable_sms FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
@@ -118,9 +126,12 @@ class Settings():
 		query = "SELECT window_opened_enable_email FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
 		return execute_select_query(query)
 	def get_temperature_max_val(self):
-		return 20
+		query = "SELECT temperature_max_val FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		return execute_select_query(query)
 	def get_temperature_min_val(self):
-		return 10
+		query = "SELECT temperature_min_val FROM configuration WHERE user_id= '"+ str(self.user_id) + "';"
+		a=execute_select_query(query)
+		return execute_select_query(query)
 #The user class
 class User():
 	def __init__(self,user_name,is_active=False,is_authenticated=False):

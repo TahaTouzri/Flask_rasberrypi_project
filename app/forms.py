@@ -13,12 +13,20 @@ from views import *
 class loginForm(Form):
     username = StringField('username', [validators.Length(min=4, max=25)])
     password = PasswordField('password', [validators.DataRequired(),])
+    #print "----------------------------------------------"
+    #print password.data
 
-class just_for_the_id():
-    def __init__(self,id):
-        self.id=id
+class changePasswordForm(Form):
+    password = PasswordField('password1', [validators.DataRequired(),])
+    repeated_password = PasswordField('password2', [validators.DataRequired(),])
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+    def validate(self):
+        if not (self.password.data==self.repeated_password.data):
+            return False
+        return True
 
-class settingsForm(Form,just_for_the_id):
+class settingsForm(Form):
     new_login_enable_sms              = BooleanField('new_login_enable_sms')#,default=get_new_login_enable_sms())
     new_login_enable_email            = BooleanField('new_login_enable_email')#,default=get_new_login_enable_email())
     temperature_exceed_enable_sms     = BooleanField('temperature_exceed_enable_sms')#,default = get_temperature_decrease_enable_sms())
@@ -31,3 +39,14 @@ class settingsForm(Form,just_for_the_id):
     window_opened_enable_email        = BooleanField('window_opened_enable_email')#,default = get_window_opened_enable_email())
     temperature_max_val               = StringField('temperature_max_val', [validators.Length(min=1, max=2)])
     temperature_min_val               = StringField('temperature_min_val', [validators.Length(min=1, max=2)])
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+    def validate(self):
+        if not Form.validate(self):
+            return False
+        if not(self.temperature_min_val.data.isdigit() and self.temperature_max_val.data.isdigit()):
+            return False
+        else:
+            if int(self.temperature_min_val.data)>int(self.temperature_max_val.data):
+                return False
+        return True

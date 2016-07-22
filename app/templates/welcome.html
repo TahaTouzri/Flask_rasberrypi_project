@@ -26,16 +26,7 @@
 				</div>
 				<div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
 						<h1>
-						 <div class="dropdown">
-						  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Profile<span class="caret"></span></button>
-						  <ul class="dropdown-menu">
-							<li><a href="profile.html">Profile</a></li>
-              <li><a href="settings.html">Settings</a></li>
-							<!--<li><a href="account.html">Account</a></li>-->
-							<li><a href="security.html">Security</a></li>
-							<li><a href="logout.html">logout    <span class="glyphicon glyphicon-log-out"></span></a></li>
-						  </ul>
-						</div>
+              <div id="dropdownmenu"></div>
 						</h1>
 				</div>
 			</div>
@@ -59,7 +50,11 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="static/javascript/javaScriptUpdater.js"></script>
 <script>
+
+console.log("set menu");
 httpSetDiv("menu","menu.html");
+console.log("set dropdown menu");
+httpSetDiv("dropdownmenu","dropdownmenu.html");
 //setInterval( function() { update_progress_bar("window_status","25"); }, 1000 );
 //sseUpdateDiv("temperature","/stream");
 </script>
