@@ -9,7 +9,7 @@ function httpSetDiv(div_id,theUrl)
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             document.getElementById(div_id).innerHTML=xmlHttp.responseText;
     }
-    xmlHttp.open("GET", theUrl,false); // true for asynchronous 
+    xmlHttp.open("GET", theUrl,false); // true for asynchronous
     xmlHttp.send(null);
 }
 //this function is to implement a polling update
@@ -22,6 +22,11 @@ function change_class(clicked_id)
 {
 	$("#menu>li.active").removeClass("active");
 	document.getElementById(clicked_id).className = "active";
+}
+//this function to change active dropdown menu
+function change_active_dropdown_menu(clicked_id)
+{
+  document.getElementById("active_dropdown_menu").innerHTML = clicked_id;
 }
 //this function is to change the active menu
 function change_active_menu(clicked_id)
@@ -36,7 +41,7 @@ function change_active_menu(clicked_id)
 		closeSseConnection(sse_event_source);
 	}
 	//open a new SSE stream
-	sseUpdateDiv("temperature","/stream/"+clicked_id);
+	sseUpdateByID("temperature","/stream/"+clicked_id);
 }
 //this function is to update a specific variable in the page
 function updateVariable(variable_id,value)
@@ -45,7 +50,7 @@ function updateVariable(variable_id,value)
 }
 
 //Server Sent Events update div function
-function sseUpdateDiv(div_id,source)
+function sseUpdateByID(div_id,source)
 {
 	var eventSource = new EventSource(source);
 	sse_div_id  = div_id;

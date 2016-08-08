@@ -198,7 +198,6 @@ def logout():
 
 #update room status
 def event(room,user_id):
-	sse_connection = sseConnection(user_id)
 	while(True):
 		data = get_room_info_update(room)
 		ev   = ServerSentEvent(data)

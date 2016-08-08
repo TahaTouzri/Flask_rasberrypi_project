@@ -14,36 +14,44 @@
 <body>
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
-			<img src="static/images/home.jpg" class="img-responsive" alt="Cinque Terre">
-		</div>
-		<div class="col-xs-2 col-sm-8 col-md-8 col-lg-8">
-			<div class="row">
-				<div class="hidden-xs hidden-sm col-md-8 col-lg-8">
-					<h1>Hello My Sweet Home</h1>
-					<h2>Hello {{name}}</h2>
-				</div>
-				<div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
-						<h1>
+        <div class="row">
+    		    <div class="hidden-xs col-sm-2 col-md-2 col-lg-2 col-md-offset-3 col-lg-offset-3">
+    			       <img src="static/images/home.jpg" class="img-responsive">
+    		    </div>
+
+    				<div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+    					<!--
+              <h1>Hello My Sweet Home</h1>
+              -->
+              <h2>Hello {{name}}</h2>
+              <p class=" text-info">Home time:<br>{{home_time}}</p>
+            </div>
+            <div class="col-md-1 col-lg-1"
               <div id="dropdownmenu"></div>
-						</h1>
-				</div>
-			</div>
-		</div>
-	</div>
+    				</div>
+    		</div>
 
-	<div class="row">
-			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="menu"></div>
-  </div>
-  <div class ="row">
-		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="body_section">
-			<div id="home"></div>
-		</div>
-	</div>
+    	  <div class="row">
+    			<div id="menu" class ="hidden-xs hidden-sm col-xs-6 col-sm-6 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3"></div>
+        </div>
 
+        <div class ="row">
 
+          <div id="previous_button" class="col-xs-2 col-sm-2 hidden-md hidden-lg">
+            <ul class="pager">
+              <li><a href="#"><</a></li>
+            </ul>
+          </div>
+      		<div id="body_section" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+      			<div id="home"></div>
+      		</div>
+          <div id="next_button" class="col-xs-2 col-sm-2 hidden-md hidden-lg">
+            <ul class="pager">
+              <li><a href="#">></a></li>
+            </ul>
+          </div>
 
+    	   </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -55,6 +63,10 @@ console.log("set menu");
 httpSetDiv("menu","menu.html");
 console.log("set dropdown menu");
 httpSetDiv("dropdownmenu","dropdownmenu.html");
+console.log("set body section");
+change_active_menu("bedroom");
+//change active dropdown menu
+document.getElementById('active_dropdown_menu').innerHTML='Home';
 //setInterval( function() { update_progress_bar("window_status","25"); }, 1000 );
 //sseUpdateDiv("temperature","/stream");
 </script>

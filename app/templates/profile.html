@@ -12,10 +12,10 @@
     <div class="row">
 
       <div class="col-md-offset-3 col-lg-offset-3">
-        <div class = "col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class = "col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <p class=" text-info">Home time:<br>{{home_time}}</p>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="dropdownmenu">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="dropdownmenu">
         </div>
       </div>
 
@@ -112,6 +112,8 @@
 <script src="static/javascript/javaScriptUpdater.js"></script>
 <script>
   httpSetDiv("dropdownmenu","dropdownmenu.html");
+  //change active dropdown menu
+  document.getElementById('active_dropdown_menu').innerHTML='Profile';
 </script>
 </body>
 </html>
